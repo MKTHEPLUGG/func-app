@@ -35,7 +35,7 @@ jobs:
         location: 'we'
         resourceGroup: 'et-rg-009'
     - name: Deploy PowerShell module to App Service
-      uses: Azure/webapps-deploy@v2
+      uses: Azure/webapps-deploy@v3
       with:
         app-name: 'et-9-function-app-009'
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
