@@ -70,4 +70,4 @@ runs:
     - name: Deploy using the artifact
       shell: bash    
       run: | 
-        az deployment group create --template-file ./main.bicep --resource-group ${{ inputs.resourceGroup }} --parameters userSequenceNumber='009'
+        az deployment group create --template-file ./templates/main.bicep --resource-group ${{ inputs.resourceGroup }} --parameters userSequenceNumber='009'

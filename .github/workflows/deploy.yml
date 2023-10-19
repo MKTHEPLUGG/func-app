@@ -34,3 +34,10 @@ jobs:
         templateFile: 'main'
         location: 'we'
         resourceGroup: 'et-rg-009'
+    - name: Deploy PowerShell module to App Service
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: 'et-9-function-app-009'
+        slot-name: 'dev'
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+        package: './PSFunction'
