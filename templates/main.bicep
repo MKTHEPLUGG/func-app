@@ -104,19 +104,12 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
           name: 'FunctionAppName'
           value: functionAppName
         }
+        {
+          name: 'webtests'
+          value: 'https://${names.faName}.azurewebsites.net'
+        }
       ]
     }
     httpsOnly: true
-  }
-}
-
-
-resource functionAppSettings 'Microsoft.Web/sites/config@2021-03-01' = {
-  name: '${functionApp.name}/appsettings'
-  dependsOn: [
-    functionApp
-  ]
-  properties: {
-    webtests: 'https://${functionApp.properties.defaultHostName}'
   }
 }
