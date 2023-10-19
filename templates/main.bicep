@@ -93,6 +93,10 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
           value: applicationInsights.properties.InstrumentationKey
         }
         {
+        name: 'AvailabilityResults_InstrumentationKey'
+        value: applicationInsights.properties.InstrumentationKey
+        }
+        {
           name: 'FUNCTIONS_WORKER_RUNTIME'
           value: 'powershell'
         }
