@@ -10,7 +10,7 @@ param location string = resourceGroup().location
 var resourceAbbreviations = {
   ai: 'application-insights'
   asp: 'app-service-plan'
-  sta: 'storageAccount'
+  sta: 'storageaccount'
   fa: 'function-app'
 }
 

@@ -69,6 +69,5 @@ runs:
     #     sed -i 's|/home/runner/work/networking/networking/artifact/main_int_we/templates/main.bicep|main.bicep|' main_we.bicepparam
     - name: Deploy using the artifact
       shell: bash    
-      run: |
-        # az deployment group create --template-file ./main.bicep --parameters ./main_we.bicepparam --resource-group ${{ inputs.resourceGroup }}  
+      run: | 
         az deployment group create --template-file ./main.bicep --resource-group ${{ inputs.resourceGroup }} --parameters userSequenceNumber='009'
