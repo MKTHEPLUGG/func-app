@@ -38,7 +38,11 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   name: names.aspName
   location: location
   sku: {
-    name: 'Free'
+    name: 'Y1'
+    tier: 'Dynamic'
+    size: 'Y1'
+    family: 'Y'
+    capacity: 0
   }
   properties: {}
 }
