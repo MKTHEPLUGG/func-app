@@ -14,6 +14,9 @@ var resourceAbbreviations = {
   fa: 'function-app'
 }
 
+var geolocation = 'westeurope'
+var functionAppName = names.faName
+
 var names = {
   aiName: '${projectName}-${userSequenceNumber}-${resourceAbbreviations.ai}-009'
   aspName: '${projectName}-${userSequenceNumber}-${resourceAbbreviations.asp}-009'
@@ -92,6 +95,18 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
           value: 'powershell'
+        }
+        {
+          name: 'webtests'
+          value: 'https://${functionApp.properties.defaultHostName}'
+        }
+        {
+          name: 'geolocation'
+          value: geolocation
+        }
+        {
+          name: 'FunctionAppName'
+          value: functionAppName
         }
       ]
     }
