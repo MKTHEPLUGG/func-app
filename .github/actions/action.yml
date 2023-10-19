@@ -1,0 +1,73 @@
+name: 'Azure Bicep Network & NSG Deploy'
+description: 'Deploys a network & NSG in azure using custom bicep module'
+author: 'Michiel Van Haegenborgh'
+
+inputs:
+  azureClientId:
+    description: 'Azure Client ID'
+    required: true
+  azureTenantId:
+    description: 'Azure Tenant ID'
+    required: true
+  azureSubscriptionId:
+    description: 'Azure Subscription ID'
+    required: true
+  environment:
+    description: 'Deployment environment (e.g., int, prod)'
+    required: true
+  templateFile:
+    description: 'Bicep template file name (without extension)'
+    required: true
+  location:
+    description: 'Deployment location (e.g., we, eastus)'
+    required: true
+  resourceGroup:
+    description: 'Azure Resource Group for deployment'
+    required: true
+
+permissions:
+  id-token: write.
+  contents: read
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout 
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Azure Login
+      uses: Azure/login@v1.4.6
+      with:
+        client-id: ${{ inputs.azureClientId }}
+        tenant-id: ${{ inputs.azureTenantId }}
+        subscription-id: ${{ inputs.azureSubscriptionId }}
+    - name: Copy template
+      shell: bash 
+      run: |
+        mkdir -p ${{ github.workspace }}/artifact/${{ inputs.templateFile }}_${{ inputs.environment }}_${{ inputs.location }}/templates
+        cp ./templates/${{ inputs.templateFile }}.bicep ${{ github.workspace }}/artifact/${{ inputs.templateFile }}_${{ inputs.environment }}_${{ inputs.location }}/templates
+    - name: Copy parameters
+      shell: bash 
+      run: |
+        mkdir -p ${{ github.workspace }}/artifact/${{ inputs.templateFile }}_${{ inputs.environment }}_${{ inputs.location }}/parameters
+        cp ./parameters/${{ inputs.environment }}/${{ inputs.templateFile }}_${{ inputs.location }}.bicepparam ${{ github.workspace }}/artifact/${{ inputs.templateFile }}_${{ inputs.environment }}_${{ inputs.location }}/parameters
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifact_${{ inputs.templateFile }}_${{ inputs.environment }}_${{ inputs.location }}
+        path: ${{ github.workspace }}/artifact/${{ inputs.templateFile }}_${{ inputs.environment }}_${{ inputs.location }}
+    - name: Adjust using directive in parameters file
+      shell: bash 
+      run: |
+        sed -i 's|../../templates/main.bicep|${{ github.workspace }}/artifact/main_int_we/templates/main.bicep|' ./artifact/main_int_we/parameters/main_we.bicepparam
+    - name: Move files and update references
+      shell: bash
+      run: |
+        cp ./artifact/main_int_we/templates/main.bicep .
+        cp ./artifact/main_int_we/parameters/main_we.bicepparam .
+        sed -i 's|/home/runner/work/networking/networking/artifact/main_int_we/templates/main.bicep|main.bicep|' main_we.bicepparam
+    - name: Deploy using the artifact
+      shell: bash    
+      run: |
+        az deployment group create --template-file ./main.bicep --parameters ./main_we.bicepparam --resource-group ${{ inputs.resourceGroup }}  

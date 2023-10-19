@@ -1,0 +1,36 @@
+name: Validate & Deploy
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  ENVIRONMENT: 'int'
+  TEMPLATE_FILE: 'main'
+  LOCATION: 'we'
+  RESOURCE_GROUP: 'et-rg-009'
+
+permissions:
+  id-token: write
+  contents: write
+
+
+jobs:
+  deploy:
+    environment: int
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Deploy using Bicep
+      uses: ./.github/actions/
+      with:
+        azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
+        azureTenantId: ${{ secrets.AZURE_TENANT_ID }}
+        azureSubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        environment: 'int'
+        templateFile: 'main'
+        location: 'we'
+        resourceGroup: 'Test-Lab'
