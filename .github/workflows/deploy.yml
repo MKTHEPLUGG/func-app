@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   deploy:
-    environment: int
+    environment: dev
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
