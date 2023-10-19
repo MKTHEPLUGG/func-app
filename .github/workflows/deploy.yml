@@ -33,4 +33,4 @@ jobs:
         environment: 'int'
         templateFile: 'main'
         location: 'we'
-        resourceGroup: 'Test-Lab'
+        resourceGroup: 'et-rg-009'
