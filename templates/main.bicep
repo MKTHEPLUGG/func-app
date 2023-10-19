@@ -97,10 +97,6 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
           value: 'powershell'
         }
         {
-          name: 'webtests'
-          value: 'https://${functionApp.properties.defaultHostName}'
-        }
-        {
           name: 'geolocation'
           value: geolocation
         }
@@ -111,5 +107,16 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
       ]
     }
     httpsOnly: true
+  }
+}
+
+
+resource functionAppSettings 'Microsoft.Web/sites/config@2021-03-01' = {
+  name: '${functionApp.name}/appsettings'
+  dependsOn: [
+    functionApp
+  ]
+  properties: {
+    webtests: 'https://${functionApp.properties.defaultHostName}'
   }
 }
