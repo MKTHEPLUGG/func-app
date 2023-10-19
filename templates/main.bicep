@@ -111,6 +111,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
 }
 
 
+
 resource functionAppSettings 'Microsoft.Web/sites/config@2021-03-01' = {
   name: '${functionApp.name}/appsettings'
   dependsOn: [
