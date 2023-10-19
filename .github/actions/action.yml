@@ -71,4 +71,4 @@ runs:
       shell: bash    
       run: |
         # az deployment group create --template-file ./main.bicep --parameters ./main_we.bicepparam --resource-group ${{ inputs.resourceGroup }}  
-        az deployment group create --template-file ./main.bicep --resource-group ${{ inputs.resourceGroup }} 
+        az deployment group create --template-file ./main.bicep --resource-group ${{ inputs.resourceGroup }} --parameters userSequenceNumber='009'
