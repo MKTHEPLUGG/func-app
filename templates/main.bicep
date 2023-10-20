@@ -61,6 +61,17 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
+
+resource applicationInsights2 'Microsoft.Insights/components@2020-02-02' = {
+  name: names.aiName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    Request_Source: 'rest'
+  }
+}
+
 resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
   name: names.faName
   location: location
@@ -94,7 +105,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         }
         {
         name: 'AvailabilityResults_InstrumentationKey'
-        value: applicationInsights.properties.InstrumentationKey
+        value: applicationInsights2.properties.InstrumentationKey
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
